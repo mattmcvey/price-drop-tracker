@@ -1,5 +1,5 @@
 // API Configuration
-const API_URL = 'http://localhost:3000/api'; // Will change to production URL
+const API_URL = 'http://localhost:3500/api'; // Will change to production URL
 
 // DOM Elements
 const authBtn = document.getElementById('auth-btn');
