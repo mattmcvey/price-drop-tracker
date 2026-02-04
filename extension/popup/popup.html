@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PriceDrop Tracker</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>💰 PriceDrop</h1>
+      <div class="user-info">
+        <span id="user-email" class="hidden"></span>
+        <button id="auth-btn" class="btn-secondary">Sign In</button>
+      </div>
+    </header>
+
+    <!-- Current Page Product Detection -->
+    <div id="current-product" class="section hidden">
+      <h2>Product Detected</h2>
+      <div class="product-card">
+        <img id="product-image" src="" alt="Product">
+        <div class="product-info">
+          <h3 id="product-title">Loading...</h3>
+          <p class="price" id="product-price">$0.00</p>
+          <p class="store" id="product-store">Amazon</p>
+        </div>
+      </div>
+      <button id="track-btn" class="btn-primary">📊 Track This Price</button>
+    </div>
+
+    <!-- Not a product page -->
+    <div id="not-product" class="section">
+      <p class="info-text">Navigate to a product page on Amazon, eBay, or other supported stores to start tracking prices!</p>
+    </div>
+
+    <!-- Tracked Products List -->
+    <div id="tracked-products" class="section">
+      <h2>Your Tracked Products (<span id="tracked-count">0</span>/3)</h2>
+      <div id="products-list">
+        <!-- Products will be injected here -->
+      </div>
+      <div id="upgrade-prompt" class="hidden">
+        <p>You've reached your free limit!</p>
+        <button id="upgrade-btn" class="btn-primary">⭐ Upgrade to Pro - $4.99/mo</button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <a href="#" id="settings-link">Settings</a>
+      <a href="#" id="support-link">Support</a>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
