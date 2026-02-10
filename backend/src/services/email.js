@@ -3,13 +3,14 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Create transporter
+// Create transporter using AWS SES
 const transporter = nodemailer.createTransport({
-  host: 'smtp.sendgrid.net',
+  host: process.env.SES_SMTP_HOST || 'email-smtp.us-east-1.amazonaws.com',
   port: 587,
+  secure: false, // true for 465, false for other ports
   auth: {
-    user: 'apikey',
-    pass: process.env.SENDGRID_API_KEY
+    user: process.env.SES_SMTP_USERNAME,
+    pass: process.env.SES_SMTP_PASSWORD
   }
 });
 
