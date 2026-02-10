@@ -312,12 +312,48 @@
 - Stripe: Test mode, webhooks forwarding
 - AWS SES: Sandbox mode (verified emails only)
 
+---
+
+### Session 3: February 10, 2026 (continued)
+**Duration:** ~3 hours
+**Completed:**
+- ✅ Replaced Puppeteer with axios + cheerio
+  - Removed 200MB Puppeteer/Chromium dependency
+  - Implemented lightweight HTML scraping with cheerio
+  - Much faster builds and smaller bundle size
+  - Works for most e-commerce sites (static HTML prices)
+- ✅ Railway deployment setup
+  - Created Railway project
+  - Added PostgreSQL database
+  - Configured environment variables
+  - Resolved Node 22 compatibility issues with cheerio
+  - Successfully deployed backend to Railway
+- ✅ GitHub repo updated with all changes
+
+**Challenges:**
+- Initial Railway deployment timeouts with Puppeteer (10+ min builds)
+- Node version compatibility issues between local (v18) and Railway (v22)
+- Cheerio ESM import syntax differences
+
+**Trade-offs made:**
+- Cheerio vs Puppeteer: Chose speed/deployability over full JS rendering
+- Can add back Puppeteer later for specific sites if needed
+- May need to monitor scraping success rates
+
+**Environment:**
+- Production backend: Railway (deployed) ✅
+- Local backend: http://localhost:3500
+- Database: PostgreSQL 15 on localhost:5432 + Railway PostgreSQL
+- Extension loaded in Chrome: ✅
+- Stripe: Test mode, webhooks configured
+- AWS SES: Sandbox mode (verified emails only)
+
 **Commands to restart:**
 ```bash
 # Start PostgreSQL (if not running)
 brew services start postgresql@15
 
-# Start backend
+# Start backend locally
 cd /Users/matt/Projects/price-drop-tracker/backend
 npm run dev
 
@@ -418,5 +454,5 @@ SELECT * FROM price_alerts ORDER BY sent_at DESC LIMIT 10;
 ---
 
 **Last Updated:** February 10, 2026
-**Status:** ✅ API Keys Configured & Tested - Ready for Deployment
-**Next Session:** Create icons, deploy backend, submit to Chrome Web Store
+**Status:** ✅ Backend Deployed to Railway - Ready for Extension Configuration
+**Next Session:** Update extension with production URL, test end-to-end, create icons, submit to Chrome Web Store
