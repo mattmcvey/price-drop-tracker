@@ -33,7 +33,7 @@ function cleanPrice(priceStr) {
 export async function scrapePrice(url, platform) {
   let browser;
   try {
-    browser = await puppeteer.launch({
+    const launchOptions = {
       headless: 'new',
       args: [
         '--no-sandbox',
@@ -42,7 +42,14 @@ export async function scrapePrice(url, platform) {
         '--disable-accelerated-2d-canvas',
         '--disable-gpu'
       ]
-    });
+    };
+
+    // In production, use system Chrome instead of bundled Chromium
+    if (process.env.NODE_ENV === 'production') {
+      launchOptions.executablePath = '/usr/bin/google-chrome-stable';
+    }
+
+    browser = await puppeteer.launch(launchOptions);
 
     const page = await browser.newPage();
 
