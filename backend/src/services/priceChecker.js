@@ -1,4 +1,5 @@
-import puppeteer from 'puppeteer';
+import axios from 'axios';
+import cheerio from 'cheerio';
 import { query } from '../config/database.js';
 import { sendPriceDropEmail } from './email.js';
 
@@ -29,54 +30,36 @@ function cleanPrice(priceStr) {
   return isNaN(price) ? null : price;
 }
 
-// Scrape current price from product page
+// Scrape current price from product page using cheerio
 export async function scrapePrice(url, platform) {
-  let browser;
   try {
-    const launchOptions = {
-      headless: 'new',
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-accelerated-2d-canvas',
-        '--disable-gpu'
-      ]
-    };
-
-    // In production, use system Chrome instead of bundled Chromium
-    if (process.env.NODE_ENV === 'production') {
-      launchOptions.executablePath = '/usr/bin/google-chrome-stable';
-    }
-
-    browser = await puppeteer.launch(launchOptions);
-
-    const page = await browser.newPage();
-
-    // Set user agent to avoid bot detection
-    await page.setUserAgent(
-      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-    );
-
-    // Navigate to product page
-    await page.goto(url, {
-      waitUntil: 'domcontentloaded',
-      timeout: 30000
+    // Fetch HTML with axios
+    const response = await axios.get(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1'
+      },
+      timeout: 15000,
+      maxRedirects: 5
     });
 
-    // Wait a bit for dynamic content
-    await page.waitForTimeout(2000);
+    // Load HTML into cheerio
+    const $ = cheerio.load(response.data);
 
     // Get selectors for this platform
     const selectors = SELECTORS[platform] || SELECTORS.amazon;
 
-    // Try to find price
+    // Try to find price using selectors
     let priceText = null;
     for (const selector of selectors.price.split(', ')) {
       try {
-        const element = await page.$(selector);
-        if (element) {
-          priceText = await page.evaluate(el => el.textContent, element);
+        const element = $(selector).first();
+        if (element.length > 0) {
+          priceText = element.text().trim();
           if (priceText) break;
         }
       } catch (error) {
@@ -84,15 +67,12 @@ export async function scrapePrice(url, platform) {
       }
     }
 
-    await browser.close();
-
     if (!priceText) {
       throw new Error('Could not find price on page');
     }
 
     return cleanPrice(priceText);
   } catch (error) {
-    if (browser) await browser.close();
     throw new Error(`Scraping failed: ${error.message}`);
   }
 }
