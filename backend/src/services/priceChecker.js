@@ -1,5 +1,5 @@
 import axios from 'axios';
-import cheerio from 'cheerio';
+import { load } from 'cheerio';
 import { query } from '../config/database.js';
 import { sendPriceDropEmail } from './email.js';
 
@@ -48,7 +48,7 @@ export async function scrapePrice(url, platform) {
     });
 
     // Load HTML into cheerio
-    const $ = cheerio.load(response.data);
+    const $ = load(response.data);
 
     // Get selectors for this platform
     const selectors = SELECTORS[platform] || SELECTORS.amazon;
