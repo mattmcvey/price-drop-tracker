@@ -451,8 +451,61 @@ SELECT * FROM price_alerts ORDER BY sent_at DESC LIMIT 10;
 - [SendGrid API](https://docs.sendgrid.com/)
 - [Railway Deployment](https://docs.railway.app/)
 
+### Session 4: February 11, 2026
+**Duration:** ~4 hours
+**Completed:**
+- ✅ Built beautiful MUI auth page for user sign-in/sign-up
+  - Material UI components with gradient theme
+  - Responsive design that fills screen on desktop
+  - Fixed CSS layout issues with body/root width
+  - Integrated with backend auth endpoints
+- ✅ Database migrations automated on startup
+  - Created migrate.js script
+  - Runs schema.sql automatically on first deploy
+  - Tables created successfully on Railway
+- ✅ Fixed extension-to-web-page communication
+  - Added externally_connectable to manifest.json
+  - Configured VITE_EXTENSION_ID as build arg in Dockerfile
+  - Auth page successfully sends messages to extension
+  - Extension receives auth token and updates UI
+  - Storage change listeners ensure popup updates
+- ✅ Full end-to-end auth flow working
+  - Users can sign up on production
+  - Extension detects successful auth
+  - User state persists in extension
+  - Sign-in status shows in popup
+- ✅ Environment configuration
+  - Set Node 22 as default with nvm
+  - Configured all Railway environment variables
+  - VITE_API_URL and VITE_EXTENSION_ID passed as Docker build args
+- ✅ Production deployment fully operational
+  - Frontend: https://price-drop-tracker-production.up.railway.app
+  - Backend API: https://price-drop-tracker-production.up.railway.app/api
+  - Auth page: https://price-drop-tracker-production.up.railway.app/auth
+  - Database: Railway PostgreSQL with auto-migrations
+
+**Challenges:**
+- Extension message passing between web page and extension required special configuration
+- Vite environment variables need to be passed as Docker build args
+- CSS layout issues with body flex positioning
+- CORS configuration for local vs production environments
+
+**Environment:**
+- Production: https://price-drop-tracker-production.up.railway.app ✅
+- Local frontend: http://localhost:5173
+- Local backend: http://localhost:3500
+- Extension ID: dikeepnlafkmigobcainlphjckjblhle
+- Database: Railway PostgreSQL with auto-migrations ✅
+- Auth: Fully working end-to-end ✅
+
+**Next Session Goals:**
+- Test product tracking on live e-commerce sites
+- Create professional icons for Chrome Web Store
+- Take screenshots for store listing
+- Submit extension to Chrome Web Store
+
 ---
 
-**Last Updated:** February 10, 2026
-**Status:** ✅ Backend Deployed to Railway - Ready for Extension Configuration
-**Next Session:** Update extension with production URL, test end-to-end, create icons, submit to Chrome Web Store
+**Last Updated:** February 11, 2026
+**Status:** ✅ Full Auth Flow Working - Extension Ready for Store Submission
+**Next Session:** Test product tracking, create assets, submit to Chrome Web Store
