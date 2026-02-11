@@ -8,7 +8,7 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "cron": "node src/cron/priceChecker.js",
-    "build": "cd ../frontend && npm install && npm run build"
+    "build": "cd ../frontend && npm install && npm run build && cp -r dist ../backend/public"
   },
   "keywords": [
     "price-tracker",

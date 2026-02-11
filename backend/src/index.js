@@ -38,7 +38,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static frontend files
-app.use(express.static(path.join(__dirname, '../../frontend/dist')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 // API Routes
 app.use('/api/auth', authRoutes);
@@ -52,7 +52,7 @@ app.get('/health', (req, res) => {
 
 // Serve React app for /auth and other frontend routes
 app.get(['/auth', '/upgrade'], (req, res) => {
-  res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
+  res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
 // API info route
