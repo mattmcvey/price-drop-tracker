@@ -1,0 +1,42 @@
+# Build stage
+FROM node:22-alpine AS builder
+
+WORKDIR /app
+
+# Copy package files
+COPY frontend/package*.json ./frontend/
+COPY backend/package*.json ./backend/
+
+# Install dependencies
+RUN cd frontend && npm install
+RUN cd backend && npm ci --production=false
+
+# Copy source files
+COPY frontend ./frontend
+COPY backend ./backend
+
+# Build frontend
+RUN cd frontend && npm run build
+
+# Create public directory and copy built files
+RUN mkdir -p backend/public && cp -r frontend/dist/* backend/public/
+
+# Production stage
+FROM node:22-alpine
+
+WORKDIR /app
+
+# Copy backend and built frontend from builder
+COPY --from=builder /app/backend ./backend
+
+# Install only production dependencies
+RUN cd backend && npm ci --production
+
+# Set working directory to backend
+WORKDIR /app/backend
+
+# Expose port
+EXPOSE 3000
+
+# Start the application
+CMD ["npm", "start"]
