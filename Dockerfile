@@ -1,6 +1,7 @@
 # Build stage
 FROM node:22-alpine AS builder
 
+# Cache bust v2
 WORKDIR /app
 
 # Copy package files first
