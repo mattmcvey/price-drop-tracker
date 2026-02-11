@@ -6,6 +6,9 @@ WORKDIR /app
 # Copy everything first
 COPY . .
 
+# Debug: List what was copied
+RUN ls -la && echo "=== Frontend ===" && ls -la frontend/ || echo "Frontend not found" && echo "=== Backend ===" && ls -la backend/ || echo "Backend not found"
+
 # Install dependencies
 RUN cd frontend && npm install
 RUN cd backend && npm ci --production=false
