@@ -177,8 +177,8 @@ function App() {
           padding: 2,
         }}
       >
-        <Container maxWidth="sm">
-          <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
+        <Container maxWidth="md">
+          <Paper elevation={3} sx={{ p: 6, borderRadius: 2, maxWidth: 600, mx: 'auto' }}>
             {/* Logo */}
             <Box sx={{ textAlign: 'center', mb: 4 }}>
               <Typography
