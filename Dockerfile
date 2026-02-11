@@ -1,20 +1,14 @@
 # Build stage
 FROM node:22-alpine AS builder
 
-# Cache bust v2
 WORKDIR /app
 
-# Copy package files first
-COPY frontend/package*.json ./frontend/
-COPY backend/package*.json ./backend/
+# Copy everything first
+COPY . .
 
-# Install dependencies (before copying source to leverage cache)
+# Install dependencies
 RUN cd frontend && npm install
 RUN cd backend && npm ci --production=false
-
-# Copy ALL source files
-COPY frontend/ ./frontend/
-COPY backend/ ./backend/
 
 # Build frontend
 RUN cd frontend && npm run build
