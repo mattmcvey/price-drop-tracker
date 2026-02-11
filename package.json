@@ -1,0 +1,10 @@
+{
+  "name": "price-drop-tracker",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install": "npm install --prefix backend && npm install --prefix frontend",
+    "build": "npm run build --prefix frontend && mkdir -p backend/public && cp -r frontend/dist/* backend/public/",
+    "start": "cd backend && npm start"
+  }
+}
