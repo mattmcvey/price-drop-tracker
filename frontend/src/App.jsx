@@ -170,15 +170,16 @@ function App() {
       <Box
         sx={{
           minHeight: '100vh',
+          width: '100%',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          padding: 2,
+          padding: 4,
         }}
       >
-        <Container maxWidth="md">
-          <Paper elevation={3} sx={{ p: 6, borderRadius: 2, maxWidth: 600, mx: 'auto' }}>
+        <Container maxWidth="sm">
+          <Paper elevation={3} sx={{ p: 6, borderRadius: 2 }}>
             {/* Logo */}
             <Box sx={{ textAlign: 'center', mb: 4 }}>
               <Typography
