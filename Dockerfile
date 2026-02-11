@@ -7,7 +7,9 @@ RUN npm install
 
 COPY frontend/ ./
 ARG VITE_API_URL
+ARG VITE_EXTENSION_ID
 ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_EXTENSION_ID=$VITE_EXTENSION_ID
 RUN npm run build
 
 # Build backend
