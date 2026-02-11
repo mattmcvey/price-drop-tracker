@@ -1,4 +1,4 @@
-node_modules
+**/node_modules
 npm-debug.log
 .env
 .git
@@ -9,3 +9,5 @@ backend/public
 frontend/dist
 extension
 shared
+.vscode
+.idea
