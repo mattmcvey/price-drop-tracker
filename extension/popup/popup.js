@@ -1,5 +1,5 @@
 // API Configuration
-const API_URL = 'http://localhost:3500/api'; // Will change to production URL
+const API_URL = 'https://price-drop-tracker-production.up.railway.app/api';
 
 // DOM Elements
 const authBtn = document.getElementById('auth-btn');

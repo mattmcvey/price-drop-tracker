@@ -1,6 +1,6 @@
 // Background service worker for PriceDrop extension
 
-const API_URL = 'http://localhost:3500/api';
+const API_URL = 'https://price-drop-tracker-production.up.railway.app/api';
 
 // Install event
 chrome.runtime.onInstalled.addListener(() => {

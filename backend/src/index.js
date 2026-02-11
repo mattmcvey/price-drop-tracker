@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import cron from 'node-cron';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 // Load environment variables
 dotenv.config();
@@ -18,6 +20,10 @@ import { checkAllPrices } from './services/priceChecker.js';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Get __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // Middleware
 app.use(cors({
   origin: process.env.FRONTEND_URL || '*',
@@ -31,7 +37,10 @@ app.use('/api/webhooks', express.raw({ type: 'application/json' }), webhooksRout
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
+// Serve static frontend files
+app.use(express.static(path.join(__dirname, '../../frontend/dist')));
+
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/api/user', userRoutes);
@@ -41,8 +50,13 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Root route
-app.get('/', (req, res) => {
+// Serve React app for /auth and other frontend routes
+app.get(['/auth', '/upgrade'], (req, res) => {
+  res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
+});
+
+// API info route
+app.get('/api', (req, res) => {
   res.json({
     name: 'PriceDrop API',
     version: '1.0.0',
