@@ -50,9 +50,10 @@ function App() {
 
   const showSuccess = (user, token) => {
     // Try to send message to Chrome extension
-    if (window.chrome && window.chrome.runtime) {
+    const extensionId = import.meta.env.VITE_EXTENSION_ID;
+    if (window.chrome && window.chrome.runtime && extensionId) {
       try {
-        chrome.runtime.sendMessage({
+        chrome.runtime.sendMessage(extensionId, {
           action: 'authSuccess',
           user: {
             id: user.id,
@@ -60,9 +61,11 @@ function App() {
             isPremium: user.isPremium,
             token: token
           }
+        }, (response) => {
+          console.log('Message sent to extension:', response);
         });
       } catch (e) {
-        console.log('Not in extension context');
+        console.log('Could not send message to extension:', e);
       }
     }
 
