@@ -16,6 +16,7 @@ import userRoutes from './routes/user.js';
 
 // Import services
 import { checkAllPrices } from './services/priceChecker.js';
+import { runMigrations } from './config/migrate.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -107,9 +108,18 @@ cron.schedule('0 3 * * *', async () => {
 });
 
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`🚀 PriceDrop API running on port ${PORT}`);
   console.log(`📊 Environment: ${process.env.NODE_ENV}`);
+
+  // Run migrations on startup
+  try {
+    await runMigrations();
+  } catch (error) {
+    console.error('Failed to run migrations:', error);
+    process.exit(1);
+  }
+
   console.log(`💰 Ready to track prices!`);
 });
 
