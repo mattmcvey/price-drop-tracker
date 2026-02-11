@@ -106,12 +106,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 // Handle auth success from auth page
 chrome.runtime.onMessageExternal.addListener((message, sender, sendResponse) => {
   if (message.action === 'authSuccess') {
-    chrome.storage.local.set({ user: message.user });
+    console.log('Auth success received:', message.user);
+    chrome.storage.local.set({ user: message.user }, () => {
+      console.log('User saved to storage');
 
-    // Notify all extension pages
-    chrome.runtime.sendMessage({
-      action: 'authSuccess',
-      user: message.user
+      // Notify all extension pages
+      chrome.runtime.sendMessage({
+        action: 'authSuccess',
+        user: message.user
+      }).catch(err => console.log('No listeners:', err));
+
+      sendResponse({ success: true });
     });
+
+    return true; // Keep the message channel open for async response
   }
 });
