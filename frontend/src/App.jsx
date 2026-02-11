@@ -82,9 +82,9 @@ function App() {
     setSuccess(true);
 
     // Close tab after 2 seconds
-    setTimeout(() => {
-      window.close();
-    }, 2000);
+    // setTimeout(() => {
+    //   window.close();
+    // }, 2000);
   };
 
   const handleLogin = async (e) => {
