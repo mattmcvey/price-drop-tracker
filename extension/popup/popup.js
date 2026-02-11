@@ -233,5 +233,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
+// Listen for storage changes (in case popup wasn't open when auth happened)
+chrome.storage.onChanged.addListener((changes, namespace) => {
+  if (namespace === 'local' && changes.user) {
+    currentUser = changes.user.newValue;
+    updateUI();
+  }
+});
+
 // Initialize
 init();
