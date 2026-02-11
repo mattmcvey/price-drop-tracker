@@ -3,17 +3,17 @@ FROM node:22-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files
+# Copy package files first
 COPY frontend/package*.json ./frontend/
 COPY backend/package*.json ./backend/
 
-# Install dependencies
+# Install dependencies (before copying source to leverage cache)
 RUN cd frontend && npm install
 RUN cd backend && npm ci --production=false
 
-# Copy source files
-COPY frontend ./frontend
-COPY backend ./backend
+# Copy ALL source files
+COPY frontend/ ./frontend/
+COPY backend/ ./backend/
 
 # Build frontend
 RUN cd frontend && npm run build
